@@ -45,7 +45,7 @@ $(function(){
 
     var time_width = 100;
     timer = setInterval(function(){
-      time_width = time_width - (100/12000);
+      time_width = time_width - (100/1200);
       if(time_width < 0)
       {
         time_width = 100;
