@@ -1,12 +1,23 @@
-var loop = null,
-    timer = null;
+var minutes = 20;
 
-function notification(t)
+function showNotification()
 {
   var notification = new Notification('Stand up!', {
     body: 'Have a drink of water and go for a walk',
     icon: 'img/walk.png'
   });
+}
+
+function notification()
+{
+  var progress = $('#progress');
+  progress.css("width", "100%");  
+
+  showNotification();
+
+  progress.animate({
+      width: '0%'
+  }, minutes * 60 * 1000, "linear", notification); 
 }
 
 function notify(msg)
@@ -34,33 +45,20 @@ function notify(msg)
 }
 
 $(function(){
+
+  var start = $('#start'),
+      stop  = $('#stop');
   
-  $('#start').on('click', function(){
-    loop = setInterval(function(){
-      notify('Stand up!');
-    }, 1200000);
-
-    $(this).addClass('hidden');
-    $('#stop').removeClass('hidden');
-
-    var time_width = 100;
-    timer = setInterval(function(){
-      time_width = time_width - (100/1200);
-      if(time_width < 0)
-      {
-        time_width = 100;
-      }
-      $('#time-bar').css('width', time_width + '%');
-    }, 1000);
-
+  start.on('click', function(){
+    notification();
+    start.addClass('hidden');
+    stop.removeClass('hidden');
   }); 
 
-  $('#stop').on('click', function(){
-    clearInterval(loop); 
-    clearInterval(timer);
-    $(this).addClass('hidden');
-    $('#start').removeClass('hidden');
-    $('#time-bar').css('width', '100%');
+  stop.on('click', function(){
+    stop.addClass('hidden');
+    start.removeClass('hidden');
+    $("#progress").stop();
   });
 
 });
